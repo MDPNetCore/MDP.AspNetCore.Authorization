@@ -1,0 +1,2 @@
+# MDP.AspNetCore.Authorization
+MDP.AspNetCore.Authorization是開源的.NET開發套件，協助開發人員快速建立整合ASP.NET Core身分授權的應用系統。提供RoleAccesses角色授權模組、Resources存取授權模組，用以簡化開發流程並滿足多變的商業需求。
