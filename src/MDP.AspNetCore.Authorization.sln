@@ -1,0 +1,85 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33424.131
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.RoleAccesses", "MDP.RoleAccesses\MDP.RoleAccesses.csproj", "{03290DF4-BCDC-474B-96B8-41B223944E40}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.RoleAccessesService", "MDP.RoleAccessesService\MDP.RoleAccessesService.csproj", "{A78F5F90-D3DC-422F-A43E-1B10CE915746}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.RoleAccessesService.Mocks", "MDP.RoleAccessesService.Mocks\MDP.RoleAccessesService.Mocks.csproj", "{573128EB-69BA-4683-B43E-73935D3D21AE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.RoleAccessesService.WebApp", "MDP.RoleAccessesService.WebApp\MDP.RoleAccessesService.WebApp.csproj", "{A90CFE0B-D678-45CB-AB64-E3EF5135E52B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02.MDP.RoleAccesses", "02.MDP.RoleAccesses", "{76A9E48E-D275-42CF-AE3A-B5380350920C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03.MDP.RoleAccessesService", "03.MDP.RoleAccessesService", "{12137DAA-81AA-4B01-811D-43C12DCB379C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01.MDP.AspNetCore.Authorization", "01.MDP.AspNetCore.Authorization", "{061888E0-6B88-4F22-8F8F-1C4A070C7924}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authorization", "MDP.AspNetCore.Authorization\MDP.AspNetCore.Authorization.csproj", "{58F75D54-6B9D-4F00-9416-E8249D10450B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.AspNetCore.Authorization.RoleAccesses", "MDP.AspNetCore.Authorization.RoleAccesses\MDP.AspNetCore.Authorization.RoleAccesses.csproj", "{3963AAD6-317F-487C-A645-63B15F4FB118}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04.Library", "04.Library", "{53A9EF54-F549-43A1-9D8D-044E8B21CDAC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CLK.Caching.Memory", "CLK.Caching.Memory\CLK.Caching.Memory.csproj", "{A965EFCA-7260-4CEB-A7CB-319E5FD9F555}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MDP.RoleAccesses.Lab", "MDP.RoleAccesses.Lab\MDP.RoleAccesses.Lab.csproj", "{F1A5DE75-1A78-43F2-95E1-BB8DF7E7D064}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{03290DF4-BCDC-474B-96B8-41B223944E40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03290DF4-BCDC-474B-96B8-41B223944E40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03290DF4-BCDC-474B-96B8-41B223944E40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03290DF4-BCDC-474B-96B8-41B223944E40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A78F5F90-D3DC-422F-A43E-1B10CE915746}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A78F5F90-D3DC-422F-A43E-1B10CE915746}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A78F5F90-D3DC-422F-A43E-1B10CE915746}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A78F5F90-D3DC-422F-A43E-1B10CE915746}.Release|Any CPU.Build.0 = Release|Any CPU
+		{573128EB-69BA-4683-B43E-73935D3D21AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{573128EB-69BA-4683-B43E-73935D3D21AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{573128EB-69BA-4683-B43E-73935D3D21AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{573128EB-69BA-4683-B43E-73935D3D21AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A90CFE0B-D678-45CB-AB64-E3EF5135E52B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A90CFE0B-D678-45CB-AB64-E3EF5135E52B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A90CFE0B-D678-45CB-AB64-E3EF5135E52B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A90CFE0B-D678-45CB-AB64-E3EF5135E52B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58F75D54-6B9D-4F00-9416-E8249D10450B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58F75D54-6B9D-4F00-9416-E8249D10450B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58F75D54-6B9D-4F00-9416-E8249D10450B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58F75D54-6B9D-4F00-9416-E8249D10450B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3963AAD6-317F-487C-A645-63B15F4FB118}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3963AAD6-317F-487C-A645-63B15F4FB118}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3963AAD6-317F-487C-A645-63B15F4FB118}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3963AAD6-317F-487C-A645-63B15F4FB118}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A965EFCA-7260-4CEB-A7CB-319E5FD9F555}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A965EFCA-7260-4CEB-A7CB-319E5FD9F555}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A965EFCA-7260-4CEB-A7CB-319E5FD9F555}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A965EFCA-7260-4CEB-A7CB-319E5FD9F555}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1A5DE75-1A78-43F2-95E1-BB8DF7E7D064}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1A5DE75-1A78-43F2-95E1-BB8DF7E7D064}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1A5DE75-1A78-43F2-95E1-BB8DF7E7D064}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1A5DE75-1A78-43F2-95E1-BB8DF7E7D064}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{03290DF4-BCDC-474B-96B8-41B223944E40} = {76A9E48E-D275-42CF-AE3A-B5380350920C}
+		{A78F5F90-D3DC-422F-A43E-1B10CE915746} = {12137DAA-81AA-4B01-811D-43C12DCB379C}
+		{573128EB-69BA-4683-B43E-73935D3D21AE} = {12137DAA-81AA-4B01-811D-43C12DCB379C}
+		{A90CFE0B-D678-45CB-AB64-E3EF5135E52B} = {12137DAA-81AA-4B01-811D-43C12DCB379C}
+		{58F75D54-6B9D-4F00-9416-E8249D10450B} = {061888E0-6B88-4F22-8F8F-1C4A070C7924}
+		{3963AAD6-317F-487C-A645-63B15F4FB118} = {061888E0-6B88-4F22-8F8F-1C4A070C7924}
+		{A965EFCA-7260-4CEB-A7CB-319E5FD9F555} = {53A9EF54-F549-43A1-9D8D-044E8B21CDAC}
+		{F1A5DE75-1A78-43F2-95E1-BB8DF7E7D064} = {76A9E48E-D275-42CF-AE3A-B5380350920C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {01B4F262-995F-43F1-82C0-FD3DCE804CBD}
+	EndGlobalSection
+EndGlobal

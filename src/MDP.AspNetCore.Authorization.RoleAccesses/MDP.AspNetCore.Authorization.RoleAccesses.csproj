@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>11.0</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MDP.AspNetCore.Authorization\MDP.AspNetCore.Authorization.csproj" />
+    <ProjectReference Include="..\MDP.RoleAccesses\MDP.RoleAccesses.csproj" />
+  </ItemGroup>
+
+</Project>
