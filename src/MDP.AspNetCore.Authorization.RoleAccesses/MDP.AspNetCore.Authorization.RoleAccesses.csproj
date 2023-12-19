@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -8,7 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MDP.AspNetCore.Authorization\MDP.AspNetCore.Authorization.csproj" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MDP.Application" Version="6.1.11" />
+    <PackageReference Include="MDP.Registration" Version="6.1.11" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MDP.RoleAccesses\MDP.RoleAccesses.csproj" />
   </ItemGroup>
 

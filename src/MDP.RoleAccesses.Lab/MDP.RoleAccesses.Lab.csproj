@@ -9,17 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MDP.AspNetCore" Version="6.1.5" />
+    <PackageReference Include="MDP.NetCore" Version="6.1.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MDP.RoleAccesses\MDP.RoleAccesses.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\MDP.RoleAccesses\MDP.RoleAccesses.csproj" />
   </ItemGroup>
 
 </Project>

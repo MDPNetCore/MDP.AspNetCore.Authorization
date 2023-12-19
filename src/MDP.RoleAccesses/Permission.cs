@@ -69,11 +69,15 @@ namespace MDP.RoleAccesses
             // Role
             if (role.Equals(this.Role, StringComparison.OrdinalIgnoreCase) == false) return false;
 
-            // ResourceUri
-            var resourceUri = $"{resourceProvider}/{resourceType}/{resourcePath}";
-            if (string.IsNullOrEmpty(resourceUri) == true) throw new InvalidOperationException($"{nameof(resourceUri)}=null");
+            // ResourcePath
+            if (resourcePath.StartsWith("/") == true) resourcePath = resourcePath.Substring(1);
 
-            // HasAccess
+            // ResourceUri
+            var resourceUri = string.Empty;
+            resourceUri = $"{resourceProvider}/{resourceType}/{resourcePath}";
+            resourceUri = resourceUri.ToLower();
+
+            // IsMatch
             if (_permissionPattern.IsMatch(resourceUri) == true) return true;
 
             // Return
@@ -90,8 +94,13 @@ namespace MDP.RoleAccesses
 
             #endregion
 
+            // ResourcePath
+            if (resourcePath.StartsWith("/") == true) resourcePath = resourcePath.Substring(1);
+
             // PermissionPattern
-            var permissionPattern = $"{resourceProvider}/{resourceType}/{resourcePath}";
+            var permissionPattern = string.Empty;
+            permissionPattern = $"{resourceProvider}/{resourceType}/{resourcePath}";
+            permissionPattern = permissionPattern.ToLower();
 
             // Convert
             permissionPattern = permissionPattern.Replace("**", _doubleAsteriskString);

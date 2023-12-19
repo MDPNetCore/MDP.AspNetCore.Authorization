@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -9,11 +9,11 @@
 
   <ItemGroup>
     <PackageReference Include="MDP.AspNetCore" Version="6.1.11" />
+    <PackageReference Include="MDP.AspNetCore.Authentication" Version="6.1.11" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MDP.RoleAccessesService.Mocks\MDP.RoleAccessesService.Mocks.csproj" />
-    <ProjectReference Include="..\MDP.RoleAccessesService\MDP.RoleAccessesService.csproj" />
+    <ProjectReference Include="..\MDP.AspNetCore.Authorization.RoleAccesses\MDP.AspNetCore.Authorization.RoleAccesses.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace MDP.RoleAccesses
 {
-    [MDP.Registration.Service<RoleAccessResultCache>()]
-    public class MemoryRoleAccessResultCache : RoleAccessResultCache
+    [MDP.Registration.Service<AccessResultRepository>()]
+    public class MemoryAccessResultRepository : AccessResultRepository
     {
         // Fields
         private readonly ExpirationMemoryCache _accessResultCache = new ExpirationMemoryCache();
 
 
         // Methods
-        public void SetAccessResult(string role, string resourceProvider, string resourceType, string resourcePath, bool accessResult)
+        public void SetValue(string role, string resourceProvider, string resourceType, string resourcePath, bool accessResult)
         {
             #region Contracts
 
@@ -31,11 +31,11 @@ namespace MDP.RoleAccesses
             var cacheKey = $"{role}/{resourceProvider}/{resourceType}/{resourcePath}";
             if (string.IsNullOrEmpty(cacheKey) == true) throw new InvalidOperationException($"{nameof(cacheKey)}=null");
 
-            // AccessResultCache
-            _accessResultCache.Set(cacheKey, accessResult);
+            // SetValue
+            _accessResultCache.SetValue(cacheKey, accessResult);
         }
 
-        public bool TryGetAccessResult(string role, string resourceProvider, string resourceType, string resourcePath, out bool accessResult)
+        public bool TryGetValue(string role, string resourceProvider, string resourceType, string resourcePath, out bool accessResult)
         {
             #region Contracts
 
@@ -50,7 +50,7 @@ namespace MDP.RoleAccesses
             var cacheKey = $"{role}/{resourceProvider}/{resourceType}/{resourcePath}";
             if (string.IsNullOrEmpty(cacheKey) == true) throw new InvalidOperationException($"{nameof(cacheKey)}=null");
 
-            // AccessResultCache
+            // TryGetValue
             return _accessResultCache.TryGetValue(cacheKey, out accessResult);
         }
     }

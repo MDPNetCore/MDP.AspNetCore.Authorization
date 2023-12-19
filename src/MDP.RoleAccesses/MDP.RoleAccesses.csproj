@@ -8,16 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MDP.Registration" Version="6.1.8" />
+    <PackageReference Include="MDP.Registration" Version="6.1.11" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CLK.Caching.Memory\CLK.Caching.Memory.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Hosting\" />
   </ItemGroup>
 
 </Project>

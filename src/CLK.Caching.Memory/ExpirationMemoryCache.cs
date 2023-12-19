@@ -25,7 +25,7 @@ namespace CLK.Caching.Memory
 
 
         // Constructors
-        public ExpirationMemoryCache(int expirationMinutes = 30, ExpirationType expirationType = ExpirationType.UnifiedExpiration)
+        public ExpirationMemoryCache(int expirationMinutes = 10, ExpirationType expirationType = ExpirationType.UnifiedExpiration)
         {
             // Require
             if (expirationMinutes <= 0) throw new InvalidOperationException($"{nameof(expirationMinutes)}={expirationMinutes}");
@@ -37,7 +37,7 @@ namespace CLK.Caching.Memory
 
 
         // Methods
-        public void Set<TItem>(object key, TItem value = default(TItem))
+        public void SetValue<TItem>(object key, TItem value = default(TItem))
         {
             #region Contracts
 
@@ -71,7 +71,7 @@ namespace CLK.Caching.Memory
                 value = getValueAction();
 
                 // Set
-                this.Set(key, value);
+                this.SetValue(key, value);
             }
 
             // Return

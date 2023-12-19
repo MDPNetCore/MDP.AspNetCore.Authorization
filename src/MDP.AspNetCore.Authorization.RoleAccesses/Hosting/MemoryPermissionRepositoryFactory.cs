@@ -1,28 +1,41 @@
-﻿using MDP.Registration;
+﻿using MDP.Application;
+using MDP.Registration;
+using MDP.RoleAccesses;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MDP.RoleAccesses
+namespace MDP.AspNetCore.Authorization.RoleAccesses
 {
-    public class MemoryPermissionRepositoryFactory : Factory<IServiceCollection, MemoryPermissionRepositoryFactory.Setting>
+    public class MemoryPermissionRepositoryFactory : Factory<WebApplicationBuilder, MemoryPermissionRepositoryFactory.Setting>
     {
         // Constructors
-        public MemoryPermissionRepositoryFactory() : base("MDP.RoleAccesses", "MemoryPermissionRepository") { }
+        public MemoryPermissionRepositoryFactory() : base("Authorization", "RoleAccesses") { }
 
 
         // Methods
-        public override void ConfigureService(IServiceCollection serviceCollection, Setting setting)
+        public override void ConfigureService(WebApplicationBuilder applicationBuilder, Setting setting)
         {
             #region Contracts
 
-            if (serviceCollection == null) throw new ArgumentException($"{nameof(serviceCollection)}=null");
+            if (applicationBuilder == null) throw new ArgumentException($"{nameof(applicationBuilder)}=null");
             if (setting == null) throw new ArgumentException($"{nameof(setting)}=null");
 
             #endregion
+
+            // Require
+            if (setting.Permissions == null) return;
+            if (setting.Permissions.Count == 0) return;
+
+            // ApplicationInfo
+            var applicationInfo = applicationBuilder.Services.BuildServiceProvider()?.GetRequiredService<ApplicationInfo>();
+            if (applicationInfo == null) throw new InvalidOperationException($"{nameof(applicationInfo)}=null");
+            if(string.IsNullOrEmpty(applicationInfo.Name)==true) throw new InvalidOperationException($"{nameof(applicationInfo.Name)}=null");
 
             // PermissionList
             var permissionList = new List<MDP.RoleAccesses.Permission>();
@@ -30,7 +43,6 @@ namespace MDP.RoleAccesses
             {
                 // Require
                 if (string.IsNullOrEmpty(permissionSetting.Role) == true) throw new InvalidOperationException($"{nameof(permissionSetting.Role)}=null");
-                if (string.IsNullOrEmpty(permissionSetting.ResourceProvider) == true) throw new InvalidOperationException($"{nameof(permissionSetting.ResourceProvider)}=null");
                 if (string.IsNullOrEmpty(permissionSetting.ResourceType) == true) throw new InvalidOperationException($"{nameof(permissionSetting.ResourceType)}=null");
                 if (string.IsNullOrEmpty(permissionSetting.ResourcePath) == true) throw new InvalidOperationException($"{nameof(permissionSetting.ResourcePath)}=null");
 
@@ -39,24 +51,22 @@ namespace MDP.RoleAccesses
                 (
                     permissionId: Guid.NewGuid().ToString(),
                     role: permissionSetting.Role,
-                    resourceProvider: permissionSetting.ResourceProvider,
+                    resourceProvider: applicationInfo.Name,
                     resourceType: permissionSetting.ResourceType,
                     resourcePath: permissionSetting.ResourcePath
                 ));
             }
 
             // MemoryPermissionRepository
-            serviceCollection.AddSingleton(new ServiceRegistration()
+            applicationBuilder.Services.AddTransient<PermissionRepository>((serviceProvider) => 
             {
-                BuilderType = typeof(IServiceCollection),
-                ServiceType = typeof(PermissionRepository),
-                InstanceType = typeof(MemoryPermissionRepository),
-                InstanceName = nameof(MemoryPermissionRepository),
-                Parameters = new Dictionary<string, object>
-                {
-                    { "PermissionList" , permissionList}
-                },
-                Singleton = false,
+                // PermissionRepository
+                PermissionRepository permissionRepository = null;
+                permissionRepository = new MemoryPermissionRepository(permissionList);
+                permissionRepository = new CachePermissionRepository(permissionRepository);
+
+                // Return
+                return permissionRepository;
             });
         }
 
@@ -72,8 +82,6 @@ namespace MDP.RoleAccesses
         {
             // Properties
             public string Role { get; set; }
-
-            public string ResourceProvider { get; set; }
 
             public string ResourceType { get; set; }
 
