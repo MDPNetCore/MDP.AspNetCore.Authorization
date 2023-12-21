@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -9,11 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="MDP.Registration" Version="6.1.11" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\CLK.Caching.Memory\CLK.Caching.Memory.csproj" />
+    <PackageReference Include="CLK.Caching.Memory" Version="6.1.11" />
   </ItemGroup>
 
 </Project>
