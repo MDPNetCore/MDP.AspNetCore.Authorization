@@ -24,7 +24,7 @@ namespace MDP.AspNetCore.Authorization.RoleAccesses
 
             #endregion
 
-            // Authorization
+            // AuthorizationRequirement
             applicationBuilder.Services.AddAuthorization(options =>
             {
                 // RequirementList
@@ -43,8 +43,11 @@ namespace MDP.AspNetCore.Authorization.RoleAccesses
                 options.DefaultPolicy = policyBuilder.Build();
             });
 
-            // IAuthorizationHandler
-            applicationBuilder.Services.AddSingleton<IAuthorizationHandler, RoleAccessRequirementHandler>();
+            // AuthorizationRequirementHandler
+            {
+                // Register
+                applicationBuilder.Services.AddSingleton<IAuthorizationHandler, RoleAccessRequirementHandler>();
+            }
         }
 
 

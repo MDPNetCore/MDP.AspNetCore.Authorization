@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MDP.RoleAccesses
 {
     [MDP.Registration.Service<AccessResultRepository>()]
-    public class MemoryAccessResultRepository : AccessResultRepository
+    public class CacheAccessResultRepository : AccessResultRepository
     {
         // Fields
         private readonly ExpirationMemoryCache _accessResultCache = new ExpirationMemoryCache();

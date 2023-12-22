@@ -31,7 +31,7 @@ namespace MDP.RoleAccesses
 
             // Default
             _permissionRepository = permissionRepository;
-            _accessResultRepository = accessResultRepository ?? new MemoryAccessResultRepository();
+            _accessResultRepository = accessResultRepository ?? new CacheAccessResultRepository();
         }
 
 

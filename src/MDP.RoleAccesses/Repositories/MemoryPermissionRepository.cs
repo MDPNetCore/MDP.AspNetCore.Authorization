@@ -1,12 +1,14 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MDP.RoleAccesses
 {
+    [MDP.Registration.Service<PermissionRepository>()]
     public class MemoryPermissionRepository : PermissionRepository
     {
         // Fields
@@ -21,6 +23,9 @@ namespace MDP.RoleAccesses
             if (permissionList == null) throw new ArgumentException($"{nameof(permissionList)}=null");
 
             #endregion
+
+            // Require
+            permissionList.ForEach(o => Validator.ValidateObject(o, new ValidationContext(o)));
 
             // Default
             _permissionList = permissionList;

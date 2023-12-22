@@ -2,6 +2,7 @@
 using MDP.RoleAccesses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
@@ -27,7 +28,10 @@ namespace MDP.AspNetCore.Authorization.RoleAccesses
             #endregion
 
             // RoleAccessContext
-            applicationBuilder.Services.TryAddSingleton<RoleAccessContext>();
+            {
+                // Register
+                applicationBuilder.Services.TryAddSingleton<RoleAccessContext>();
+            }
         }
 
 
