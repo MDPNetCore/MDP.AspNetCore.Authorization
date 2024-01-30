@@ -9,6 +9,6 @@ namespace MDP.RoleAccesses
     public interface PermissionRepository
     {
         // Methods
-        List<Permission> FindAllByRole(string role, string resourceProvider, string resourceType);
+        List<Permission> FindAllByRoleId(string roleId, string accessProvider, string accessType);
     }
 }

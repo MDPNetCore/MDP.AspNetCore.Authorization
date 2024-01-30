@@ -1,5 +1,4 @@
-﻿using MDP.Application;
-using MDP.Registration;
+﻿using MDP.Registration;
 using MDP.RoleAccesses;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MDP.AspNetCore.Authorization.RoleAccesses
 {
-    public class PermissionRepositoryFactory : Factory<WebApplicationBuilder, PermissionRepositoryFactory.Setting>
+    public class PermissionRepositoryFactory : ServiceFactory<WebApplicationBuilder, PermissionRepositoryFactory.Setting>
     {
         // Constructors
         public PermissionRepositoryFactory() : base("Authorization", "RoleAccesses") { }
@@ -29,41 +28,17 @@ namespace MDP.AspNetCore.Authorization.RoleAccesses
 
             #endregion
 
-            // ApplicationInfo
-            var applicationInfo = applicationBuilder.Services.BuildServiceProvider()?.GetRequiredService<ApplicationInfo>();
-            if (applicationInfo == null) throw new InvalidOperationException($"{nameof(applicationInfo)}=null");
-            if (string.IsNullOrEmpty(applicationInfo.Name) == true) throw new InvalidOperationException($"{nameof(applicationInfo.Name)}=null");
-
-            // MemoryMenuRepository
-            if (setting.Permissions != null && setting.Permissions.Count > 0)
+            // PermissionRepository
+            applicationBuilder.Services.AddTransient<PermissionRepository>((serviceProvider) =>
             {
-                // PermissionList
-                var permissionList = new List<MDP.RoleAccesses.Permission>();
-                foreach (var permissionSetting in setting.Permissions)
-                {
-                    permissionList.Add(new MDP.RoleAccesses.Permission()
-                    {
-                        PermissionId = Guid.NewGuid().ToString(),
-                        Role = permissionSetting.Role,
-                        ResourceProvider = applicationInfo.Name,
-                        ResourceType = permissionSetting.ResourceType,
-                        ResourcePath = permissionSetting.ResourcePath
-                    });
-                }
-                permissionList.ForEach(o => Validator.ValidateObject(o, new ValidationContext(o)));
+                // Create
+                PermissionRepository permissionRepository = null;
+                permissionRepository = new MemoryPermissionRepository(setting.Permissions.Select(o => o.ToPermission()).ToList());
+                permissionRepository = new CachePermissionRepository(permissionRepository);
 
-                // Register
-                applicationBuilder.Services.AddTransient<PermissionRepository>((serviceProvider) =>
-                {
-                    // Create
-                    PermissionRepository permissionRepository = null;
-                    permissionRepository = new MemoryPermissionRepository(permissionList);
-                    permissionRepository = new CachePermissionRepository(permissionRepository);
-
-                    // Return
-                    return permissionRepository;
-                });
-            }
+                // Return
+                return permissionRepository;
+            });
         }
 
 
@@ -71,17 +46,22 @@ namespace MDP.AspNetCore.Authorization.RoleAccesses
         public class Setting
         {
             // Properties
-            public List<Permission> Permissions { get; set; } = null;
+            public List<PermissionSetting> Permissions { get; set; } = null;
         }
 
-        public class Permission
+        public class PermissionSetting
         {
             // Properties
-            public string Role { get; set; }
+            public string RoleId { get; set; }
 
-            public string ResourceType { get; set; }
+            public string AccessUri { get; set; }
 
-            public string ResourcePath { get; set; }
+
+            // Methods
+            public Permission ToPermission()
+            {
+                return new Permission(Guid.NewGuid().ToString(), this.RoleId, this.AccessUri);
+            }
         }
     }
 }

@@ -32,34 +32,30 @@ namespace MDP.RoleAccesses
 
 
         // Methods
-        public List<Permission> FindAllByRole(string role, string resourceProvider, string resourceType)
+        public List<Permission> FindAllByRoleId(string roleId, string accessProvider, string accessType)
         {
             #region Contracts
 
-            if (string.IsNullOrEmpty(role) == true) throw new ArgumentException($"{nameof(role)}=null");
-            if (string.IsNullOrEmpty(resourceProvider) == true) throw new ArgumentException($"{nameof(resourceProvider)}=null");
-            if (string.IsNullOrEmpty(resourceType) == true) throw new ArgumentException($"{nameof(resourceType)}=null");
+            if (string.IsNullOrEmpty(roleId) == true) throw new ArgumentException($"{nameof(roleId)}=null");
+            if (string.IsNullOrEmpty(accessProvider) == true) throw new ArgumentException($"{nameof(accessProvider)}=null");
+            if (string.IsNullOrEmpty(accessType) == true) throw new ArgumentException($"{nameof(accessType)}=null");
 
             #endregion
 
             // CacheKey
-            var cacheKey = $"{role}/{resourceProvider}/{resourceType}";
+            var cacheKey = $"{roleId}/{accessProvider}/{accessType}";
             if (string.IsNullOrEmpty(cacheKey) == true) throw new InvalidOperationException($"{nameof(cacheKey)}=null");
 
             // PermissionList
-            List<Permission> permissionList = _permissionListCache.GetValue(cacheKey, () => 
+            var permissionList = _permissionListCache.GetValue(cacheKey, () => 
             {
-                // FindAll
-                permissionList = _permissionRepository.FindAllByRole(role, resourceProvider, resourceType);
-                if (permissionList == null) throw new InvalidOperationException($"{nameof(permissionList)}=null");
-
-                // Return
-                return permissionList; 
+                // PermissionRepository
+                return _permissionRepository.FindAllByRoleId(roleId, accessProvider, accessType);
             });
             if (permissionList == null) throw new InvalidOperationException($"{nameof(permissionList)}=null");
 
             // FindAll
-            return permissionList.FindAll(o => o.Role == role && o.ResourceProvider == resourceProvider && o.ResourceType == resourceType).ToList();
+            return permissionList;
         }
     }
 }

@@ -44,14 +44,33 @@ namespace MDP.AspNetCore.Authorization.RoleAccesses.Lab
             #endregion
 
             // ClaimsIdentity
-            var claimsIdentity = new ClaimsIdentity(new List<Claim>()
+            ClaimsIdentity claimsIdentity = null;
+
+            // Clark(Admin) 
+            if (claimsIdentity == null && username == "Clark")
             {
-                new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.Name, "Clark"),
-                new Claim(ClaimTypes.Email, "Clark@hotmail.com"),
-                new Claim(ClaimTypes.Role, "Admin"),
-                new Claim("Nickname", "Clark")
-            }, "Password");
+                claimsIdentity = new ClaimsIdentity(new List<Claim>()
+                {
+                    new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString()),
+                    new Claim(ClaimTypes.Name, "Clark"),
+                    new Claim(ClaimTypes.Email, "Clark@hotmail.com"),
+                    new Claim(ClaimTypes.Role, "Admin"),
+                    new Claim("Nickname", "Clark")
+                }, "Password");
+            }
+
+            // Other(User) 
+            if (claimsIdentity == null)
+            {
+                claimsIdentity = new ClaimsIdentity(new List<Claim>()
+                {
+                    new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString()),
+                    new Claim(ClaimTypes.Name, $"{username}"),
+                    new Claim(ClaimTypes.Email, $"{username}@hotmail.com"),
+                    new Claim(ClaimTypes.Role, "User"),
+                    new Claim("Nickname", $"{username}")
+                }, "Password");
+            }
 
             // Return
             return await this.LoginAsync(claimsIdentity, returnUrl);

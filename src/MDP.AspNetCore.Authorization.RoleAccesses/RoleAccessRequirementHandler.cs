@@ -1,5 +1,4 @@
-﻿using MDP.Application;
-using MDP.RoleAccesses;
+﻿using MDP.RoleAccesses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -12,24 +11,20 @@ namespace MDP.AspNetCore.Authorization.RoleAccesses
     public class RoleAccessRequirementHandler : AuthorizationHandler<RoleAccessRequirement>
     {
         // Fields
-        private readonly RoleAccessContext _accessContext = null;
-
-        private readonly ApplicationInfo _applicationInfo = null;
+        private readonly RoleAccessesContext _accessesContext = null;
 
 
         // Constructors
-        public RoleAccessRequirementHandler(RoleAccessContext accessContext, ApplicationInfo applicationInfo)
+        public RoleAccessRequirementHandler(RoleAccessesContext accessesContext)
         {
             #region Contracts
 
-            if (accessContext == null) throw new ArgumentException($"{nameof(accessContext)}=null");
-            if (applicationInfo == null) throw new ArgumentException($"{nameof(applicationInfo)}=null");
+            if (accessesContext == null) throw new ArgumentException($"{nameof(accessesContext)}=null");
 
             #endregion
 
             // Default
-            _accessContext = accessContext;
-            _applicationInfo = applicationInfo;
+            _accessesContext = accessesContext;
         }
 
 
@@ -53,12 +48,15 @@ namespace MDP.AspNetCore.Authorization.RoleAccesses
             if (identity.IsAuthenticated == false) return Task.CompletedTask;
 
             // RoleList
-            var roleList = identity.Claims.Where(claim => claim.Type == ClaimTypes.Role).Select(claim => claim.Value).ToList();
+            var roleList = identity.Claims.Where(claim => claim.Type == identity.RoleClaimType).Select(claim => claim.Value).ToList();
             if (roleList == null) return Task.CompletedTask;
-            if (roleList.Count == 0) return Task.CompletedTask;            
+            if (roleList.Count == 0) return Task.CompletedTask;
+
+            // ResourceUri
+            var resourceUri = $"{httpContext.Request.Scheme}://{httpContext.Request.Host}{httpContext.Request.Path}";
 
             // HasAccess
-            if (_accessContext.HasAccess(roleList, _applicationInfo.Name, "Path", httpContext.Request.Path) == true)
+            if (_accessesContext.HasAccess(roleList, resourceUri) == true)
             {
                 context.Succeed(requirement);
             }

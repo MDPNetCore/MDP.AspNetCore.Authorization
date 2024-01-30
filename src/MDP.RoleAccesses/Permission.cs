@@ -1,119 +1,117 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Linq;
+using System.Security.AccessControl;
+using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using MDP.RoleAccesses;
 
 namespace MDP.RoleAccesses
 {
-    public partial class Permission : IValidatableObject
+    public class Permission
     {
         // Constants
         private static readonly string _doubleAsteriskString = Guid.NewGuid().ToString();
 
 
+        // Fields
+        private Regex _accessPattern = null;
+
+
+        // Constructors
+        public Permission(string permissionId, string roleId, string accessUri) : this(permissionId, roleId, new AccessUri(accessUri))
+        {
+            
+        }
+
+        public Permission(string permissionId, string roleId, AccessUri accessUri)
+        {
+            #region Contracts
+
+            if (string.IsNullOrEmpty(permissionId) == true) throw new ArgumentException($"{nameof(permissionId)}=null");
+            if (string.IsNullOrEmpty(roleId) == true) throw new ArgumentException($"{nameof(roleId)}=null");
+            if (accessUri == null) throw new ArgumentException($"{nameof(accessUri)}=null");
+
+            #endregion
+
+            // Default
+            this.PermissionId = permissionId;
+            this.RoleId = roleId;
+            this.AccessUri = accessUri;
+
+            // Create
+            _accessPattern = CreateAccessPattern(accessUri.AccessString);
+        }
+
+
         // Properties
         public string PermissionId { get; set; }
 
-        public string Role { get; set; }
+        public string RoleId { get; set; }
 
-        public string ResourceProvider { get; set; }
+        public AccessUri AccessUri { get; set; }
 
-        public string ResourceType { get; set; }
+        private Regex AccessPattern
+        {
+            get
+            {
+                // Create
+                if (_accessPattern == null)
+                {
+                    _accessPattern = this.CreateAccessPattern(this.AccessUri.AccessString);
+                }
+                if (_accessPattern == null) throw new InvalidOperationException($"{nameof(_accessPattern)}=null");
 
-        public string ResourcePath { get; set; }
+                // Return
+                return _accessPattern;
+            }
+        }
 
 
         // Methods
-        public bool HasAccess(string role, string resourceProvider, string resourceType, string resourcePath)
+        public bool HasAccess(string roleId, ResourceUri resourceUri)
         {
             #region Contracts
 
-            if (string.IsNullOrEmpty(role) == true) throw new ArgumentException($"{nameof(role)}=null");
-            if (string.IsNullOrEmpty(resourceProvider) == true) throw new ArgumentException($"{nameof(resourceProvider)}=null");
-            if (string.IsNullOrEmpty(resourceType) == true) throw new ArgumentException($"{nameof(resourceType)}=null");
-            if (string.IsNullOrEmpty(resourcePath) == true) throw new ArgumentException($"{nameof(resourcePath)}=null");
-
+            if (string.IsNullOrEmpty(roleId) == true) throw new ArgumentException($"{nameof(roleId)}=null");
+            if (resourceUri == null) throw new ArgumentException($"{nameof(resourceUri)}=null");
+            
             #endregion
 
-            // Role
-            if (role.Equals(this.Role, StringComparison.OrdinalIgnoreCase) == false) return false;
-
-            // ResourcePath
-            if (resourcePath.StartsWith("/") == true) resourcePath = resourcePath.Substring(1);
+            // RoleId
+            if (this.RoleId.Equals(roleId, StringComparison.OrdinalIgnoreCase) == false) return false;
 
             // ResourceUri
-            var resourceUri = string.Empty;
-            resourceUri = $"{resourceProvider}/{resourceType}/{resourcePath}";
-            resourceUri = resourceUri.ToLower();
-
-            // PermissionPattern
-            var permissionPattern = this.ConvertToPermissionPattern(this.ResourceProvider, this.ResourceType, this.ResourcePath);
-            if (permissionPattern == null) throw new InvalidOperationException($"{nameof(permissionPattern)}=null");
-
-            // PermissionMatch
-            if (permissionPattern.IsMatch(resourceUri) == true) return true;
+            if (this.AccessPattern.IsMatch(resourceUri.ResourceString) == false) return false;
 
             // Return
-            return false;
+            return true;
         }
 
-        private Regex ConvertToPermissionPattern(string resourceProvider, string resourceType, string resourcePath)
+        private Regex CreateAccessPattern(string accessString)
         {
             #region Contracts
 
-            if (string.IsNullOrEmpty(resourceProvider) == true) throw new ArgumentException($"{nameof(resourceProvider)}=null");
-            if (string.IsNullOrEmpty(resourceType) == true) throw new ArgumentException($"{nameof(resourceType)}=null");
-            if (string.IsNullOrEmpty(resourcePath) == true) throw new ArgumentException($"{nameof(resourcePath)}=null");
+            if (string.IsNullOrEmpty(accessString) == true) throw new ArgumentException($"{nameof(accessString)}=null");
 
             #endregion
 
-            // ResourcePath
-            if (resourcePath.StartsWith("/") == true) resourcePath = resourcePath.Substring(1);
+            // AccessPatternString
+            var accessPatternString = accessString;
+            accessPatternString = accessPatternString.Replace("**", _doubleAsteriskString);
+            accessPatternString = accessPatternString.Replace("*", "[^/]*");
+            accessPatternString = accessPatternString.Replace(_doubleAsteriskString, ".*");
+            accessPatternString = "^" + accessPatternString + "$";
 
-            // PermissionPattern
-            var permissionPattern = string.Empty;
-            permissionPattern = $"{resourceProvider}/{resourceType}/{resourcePath}";
-            permissionPattern = permissionPattern.ToLower();
-
-            // Convert
-            permissionPattern = permissionPattern.Replace("**", _doubleAsteriskString);
-            permissionPattern = permissionPattern.Replace("*", "[^/]*");
-            permissionPattern = permissionPattern.Replace(_doubleAsteriskString, ".*");
-            permissionPattern = "^" + permissionPattern + "$";
+            // AccessPattern
+            var accessPattern = new Regex(accessPatternString, RegexOptions.IgnoreCase);
 
             // Return
-            return new Regex(permissionPattern);
-        }
-    }
-
-    public partial class Permission : IValidatableObject
-    {
-        // Methods
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            #region Contracts
-
-            if (validationContext == null) throw new ArgumentException($"{nameof(validationContext)}=null");
-
-            #endregion
-
-            // PermissionId
-            if (string.IsNullOrEmpty(this.PermissionId) == true) yield return new ValidationResult($"{nameof(this.PermissionId)}=null", new[] { nameof(this.PermissionId) });
-
-            // Role
-            if (string.IsNullOrEmpty(this.Role) == true) yield return new ValidationResult($"{nameof(this.Role)}=null", new[] { nameof(this.Role) });
-
-            // ResourceProvider
-            if (string.IsNullOrEmpty(this.ResourceProvider) == true) yield return new ValidationResult($"{nameof(this.ResourceProvider)}=null", new[] { nameof(this.ResourceProvider) });
-
-            // ResourceType
-            if (string.IsNullOrEmpty(this.ResourceType) == true) yield return new ValidationResult($"{nameof(this.ResourceType)}=null", new[] { nameof(this.ResourceType) });
-
-            // ResourcePath
-            if (string.IsNullOrEmpty(this.ResourcePath) == true) yield return new ValidationResult($"{nameof(this.ResourcePath)}=null", new[] { nameof(this.ResourcePath) });
+            return accessPattern;
         }
     }
 }

@@ -1,47 +1,49 @@
 ﻿using System;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace MDP.RoleAccesses.Lab
 {
     public class Program
     {
         // Methods
-        public static void Run(RoleAccessContext accessContext)
+        public static void Run(RoleAccessesContext accessesContext)
         {
             #region Contracts
 
-            if (accessContext == null) throw new ArgumentException($"{nameof(accessContext)}=null");
+            if (accessesContext == null) throw new ArgumentException($"{nameof(accessesContext)}=null");
 
             #endregion
 
             // True
             Console.WriteLine("HasAccess=True");
-            HasAccess(accessContext, "Admin", "MDP.RBAC.Service/Menu/Users/Add");
-            HasAccess(accessContext, "Admin", "MDP.RBAC.Service/Menu/Roles/Add");
-            HasAccess(accessContext, "User", "MDP.RBAC.Service/Menu/Users/List");
-            HasAccess(accessContext, "User", "MDP.RBAC.Service/Menu/Users/Password/Reset");
+            HasAccess(accessesContext, "Admin", "menu://MDP.RBAC.Service/Users/Add");
+            HasAccess(accessesContext, "Admin", "menu://MDP.RBAC.Service/Roles/Add");
+            HasAccess(accessesContext, "User", "menu://MDP.RBAC.Service/Users/List");
+            HasAccess(accessesContext, "User", "menu://MDP.RBAC.Service/Users/Password/Reset");
             Console.WriteLine();
 
             // False
             Console.WriteLine("HasAccess=False");
-            HasAccess(accessContext, "Admin", "MDP.RBAC.Service/Menu/Users/List");
-            HasAccess(accessContext, "Admin", "MDP.RBAC.Service/Menu/Users/Password");
-            HasAccess(accessContext, "User", "MDP.RBAC.Service/Menu/Users/Add");
-            HasAccess(accessContext, "User", "MDP.RBAC.Service/Menu/Roles/Add");
+            HasAccess(accessesContext, "Admin", "menu://MDP.RBAC.Service/Users/List");
+            HasAccess(accessesContext, "Admin", "menu://MDP.RBAC.Service/Users/Password");
+            HasAccess(accessesContext, "User", "menu://MDP.RBAC.Service/Users/Add");
+            HasAccess(accessesContext, "User", "menu://MDP.RBAC.Service/Roles/Add");
             Console.WriteLine();
         }
 
-        private static void HasAccess(RoleAccessContext accessContext, string role, string resourceUri)
+        private static void HasAccess(RoleAccessesContext accessesContext, string roleId, string resourceUri)
         {
             #region Contracts
 
-            if (accessContext == null) throw new ArgumentException($"{nameof(accessContext)}=null");
-            if (string.IsNullOrEmpty(role) == true) throw new ArgumentException($"{nameof(role)}=null");
+            if (accessesContext == null) throw new ArgumentException($"{nameof(accessesContext)}=null");
+            if (string.IsNullOrEmpty(roleId) == true) throw new ArgumentException($"{nameof(roleId)}=null");
             if (string.IsNullOrEmpty(resourceUri) == true) throw new ArgumentException($"{nameof(resourceUri)}=null");
 
             #endregion
 
             // Display
-            Console.WriteLine($"HasAccess={accessContext.HasAccess(role, resourceUri)}, Role={role}, Resource={resourceUri}");
+            Console.WriteLine($"HasAccess={accessesContext.HasAccess(roleId, resourceUri)}, RoleId={roleId}, Resource={resourceUri}");
         }
 
         public static void Main(string[] args)

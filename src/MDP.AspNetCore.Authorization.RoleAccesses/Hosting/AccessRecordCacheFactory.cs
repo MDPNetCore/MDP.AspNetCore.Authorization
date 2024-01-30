@@ -10,10 +10,10 @@ using System.Linq;
 
 namespace MDP.AspNetCore.Authorization.RoleAccesses
 {
-    public class AccessResultRepositoryFactory : Factory<WebApplicationBuilder, AccessResultRepositoryFactory.Setting>
+    public class CacheAccessRecordRepositoryFactory : ServiceFactory<WebApplicationBuilder, CacheAccessRecordRepositoryFactory.Setting>
     {
         // Constructors
-        public AccessResultRepositoryFactory() : base("Authorization", "RoleAccesses") { }
+        public CacheAccessRecordRepositoryFactory() : base("Authorization", "RoleAccesses") { }
 
 
         // Methods
@@ -26,19 +26,16 @@ namespace MDP.AspNetCore.Authorization.RoleAccesses
 
             #endregion
 
-            // CacheAccessResultRepository
+            // AccessRecordRepository
+            applicationBuilder.Services.AddTransient<AccessRecordRepository>((serviceProvider) =>
             {
-                // Register
-                applicationBuilder.Services.AddTransient<AccessResultRepository>((serviceProvider) =>
-                {
-                    // Create
-                    AccessResultRepository accessResultRepository = null;
-                    accessResultRepository = new CacheAccessResultRepository();
+                // Create
+                AccessRecordRepository accessRecordRepository = null;
+                accessRecordRepository = new CacheAccessRecordRepository();
 
-                    // Return
-                    return accessResultRepository;
-                });
-            }
+                // Return
+                return accessRecordRepository;
+            });
         }
 
 

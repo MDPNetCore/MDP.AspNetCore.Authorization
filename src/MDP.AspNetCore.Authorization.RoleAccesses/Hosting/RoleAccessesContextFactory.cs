@@ -11,10 +11,10 @@ using System.Linq;
 
 namespace MDP.AspNetCore.Authorization.RoleAccesses
 {
-    public class RoleAccessContextFactory : Factory<WebApplicationBuilder, RoleAccessContextFactory.Setting>
+    public class RoleAccessesContextFactory : ServiceFactory<WebApplicationBuilder, RoleAccessesContextFactory.Setting>
     {
         // Constructors
-        public RoleAccessContextFactory() : base("Authorization", "RoleAccesses") { }
+        public RoleAccessesContextFactory() : base("Authorization", "RoleAccesses") { }
 
 
         // Methods
@@ -27,11 +27,8 @@ namespace MDP.AspNetCore.Authorization.RoleAccesses
 
             #endregion
 
-            // RoleAccessContext
-            {
-                // Register
-                applicationBuilder.Services.TryAddSingleton<RoleAccessContext>();
-            }
+            // RoleAccessesContext
+            applicationBuilder.Services.TryAddSingleton<RoleAccessesContext>();
         }
 
 

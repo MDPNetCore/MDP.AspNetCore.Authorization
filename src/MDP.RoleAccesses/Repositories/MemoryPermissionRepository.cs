@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace MDP.RoleAccesses
 {
-    [MDP.Registration.Service<PermissionRepository>()]
     public class MemoryPermissionRepository : PermissionRepository
     {
         // Fields
@@ -24,27 +23,28 @@ namespace MDP.RoleAccesses
 
             #endregion
 
-            // Require
-            permissionList.ForEach(o => Validator.ValidateObject(o, new ValidationContext(o)));
-
             // Default
             _permissionList = permissionList;
         }
 
 
         // Methods
-        public List<Permission> FindAllByRole(string role, string resourceProvider, string resourceType)
+        public List<Permission> FindAllByRoleId(string roleId, string accessProvider, string accessType)
         {
             #region Contracts
 
-            if (string.IsNullOrEmpty(role) == true) throw new ArgumentException($"{nameof(role)}=null");
-            if (string.IsNullOrEmpty(resourceProvider) == true) throw new ArgumentException($"{nameof(resourceProvider)}=null");
-            if (string.IsNullOrEmpty(resourceType) == true) throw new ArgumentException($"{nameof(resourceType)}=null");
+            if (string.IsNullOrEmpty(roleId) == true) throw new ArgumentException($"{nameof(roleId)}=null");
+            if (string.IsNullOrEmpty(accessProvider) == true) throw new ArgumentException($"{nameof(accessProvider)}=null");
+            if (string.IsNullOrEmpty(accessType) == true) throw new ArgumentException($"{nameof(accessType)}=null");
 
             #endregion
 
             // FindAll
-            return _permissionList.FindAll(o=>o.Role==role && o.ResourceProvider==resourceProvider && o.ResourceType==resourceType).ToList();
+            return _permissionList.FindAll(o=>
+                o.RoleId.Equals(roleId, StringComparison.OrdinalIgnoreCase)==true && 
+                o.AccessUri.AccessProvider.Equals(accessProvider, StringComparison.OrdinalIgnoreCase) == true &&
+                o.AccessUri.AccessType.Equals(accessType, StringComparison.OrdinalIgnoreCase) == true
+            ).ToList();
         }
     }
 }

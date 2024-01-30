@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace MDP.AspNetCore.Authorization.RoleAccesses
 {
-    public class RoleAccessAuthorizationFactory : Factory<WebApplicationBuilder, RoleAccessAuthorizationFactory.Setting>
+    public class RoleAccessAuthorizationFactory : ServiceFactory<WebApplicationBuilder, RoleAccessAuthorizationFactory.Setting>
     {
         // Constructors
         public RoleAccessAuthorizationFactory() : base("Authorization", "RoleAccesses") { }
