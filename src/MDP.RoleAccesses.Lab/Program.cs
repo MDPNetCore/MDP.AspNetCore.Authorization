@@ -18,17 +18,14 @@ namespace MDP.RoleAccesses.Lab
             // True
             Console.WriteLine("HasAccess=True");
             HasAccess(accessesContext, "Admin", "menu://MDP.RBAC.Service/Users/Add");
-            HasAccess(accessesContext, "Admin", "menu://MDP.RBAC.Service/Roles/Add");
             HasAccess(accessesContext, "User", "menu://MDP.RBAC.Service/Users/List");
-            HasAccess(accessesContext, "User", "menu://MDP.RBAC.Service/Users/Password/Reset");
+            HasAccess(accessesContext, "User", "menu://MDP.RBAC.Service/Users/12345/Profile");
             Console.WriteLine();
 
             // False
             Console.WriteLine("HasAccess=False");
-            HasAccess(accessesContext, "Admin", "menu://MDP.RBAC.Service/Users/List");
-            HasAccess(accessesContext, "Admin", "menu://MDP.RBAC.Service/Users/Password");
+            HasAccess(accessesContext, "Admin", "menu://MDP.RBAC.Service/Roles/List");
             HasAccess(accessesContext, "User", "menu://MDP.RBAC.Service/Users/Add");
-            HasAccess(accessesContext, "User", "menu://MDP.RBAC.Service/Roles/Add");
             Console.WriteLine();
         }
 
